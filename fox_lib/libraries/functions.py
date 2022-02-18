@@ -10,8 +10,8 @@ def now_str():
 
 
 def read_json():
-    secret = open("json/secret.json")
-    config = open("json/config.json")
+    secret = open(r"json/secret.json")
+    config = open(r"json/config.json")
 
     secret = json.load(secret)
     config = json.load(config)

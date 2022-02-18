@@ -1,6 +1,6 @@
 import fox_lib.libraries.functions as fox_library
+import discord
 
-from datetime import datetime
 from discord.ext import commands
 
 
@@ -10,6 +10,7 @@ class DiscordElevatedCommands(commands.Cog):
 
         self.json_values = fox_library.read_json()
 
+        self.ignore_bots = self.json_values["config"]["ignore_bots"]
         self.elevated_users = self.json_values["secret"]["perms"]
 
     @commands.command(aliases=["poweroff", "shutdown"])
@@ -28,8 +29,17 @@ class DiscordElevatedCommands(commands.Cog):
         if message.author.id not in self.elevated_users:
             return
 
+        for guild in self.bot.guilds:
+            embed = discord.Embed(title=f" {guild}",
+                          url="https://github.com/suwuako/fox-tracker",
+                          color=0x87cefa)
 
-
+            async for member in guild.fetch_members(limit=None):
+                #ignore all bots
+                if self.ignore_bots and member.bot != True:
+                    activity = guild.get_member(member.id).activities
+                    if activity != ():
+                        print(activity)
 
 
 def setup(bot):
