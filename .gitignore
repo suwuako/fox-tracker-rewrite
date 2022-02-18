@@ -1,3 +1,9 @@
+#fox-tracker
+*/secret.json
+secret.json
+.idea
+__pycache__
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
