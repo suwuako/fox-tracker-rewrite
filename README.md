@@ -45,7 +45,7 @@ This will only reflect a small portion of what companies that run services is ab
 5. do some cool stuff with it maybe 
 
 ## License
-Creative Commons
+Creative Commons - 1.0
 
 ## Contributors
 suwa
