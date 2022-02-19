@@ -3,6 +3,7 @@ import fox_lib.libraries.functions as fox_library
 from datetime import datetime
 from discord.ext import commands
 
+
 class DiscordBasicCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -20,7 +21,6 @@ class DiscordBasicCommands(commands.Cog):
         latency = f"[latency: {str(datetime.now() - then)} (ms)]"
         await item.edit(content=f"{after}\n"
                                 f"{latency}")
-
 
     @commands.command()
     async def ping(self, message):
@@ -42,7 +42,6 @@ class DiscordBasicCommands(commands.Cog):
 
         output = f"[{fox_library.now_str()}]: Kemo has been online for `{uptime}`, since `{self.start_time_str}`"
         await self.latency(message, output, output)
-
 
 
 def setup(bot):
