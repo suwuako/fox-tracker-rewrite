@@ -25,7 +25,8 @@ Now includes/is planning to add functions to track user activity in general and 
 
 ## Directory Structure
 - `fox_lib` -- main library containing command cogs, events and fox_lib
--- `cogs`
+
+* `cogs`
 
 - `json` -- folder to contain all json files that is used
 --
