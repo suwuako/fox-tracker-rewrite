@@ -15,7 +15,12 @@ Now includes/is planning to add functions to track user activity in general and 
 
 ## Functions
 
+### Auto
 - log all user statuses on initialization + continue to log changes in user activity
+
+### Commands
+- !status to check all current activities
+- !ping to check latency
 
 ## TODOs
 1. fix bug with custom status and logging
@@ -28,7 +33,7 @@ Now includes/is planning to add functions to track user activity in general and 
 8. clean the code its spaghetti rn
 
 ## License
-GPL-3.0
+Creative Commons
 
 ## Contributors
 suwa
