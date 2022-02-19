@@ -23,6 +23,13 @@ Now includes/is planning to add functions to track user activity in general and 
 - !status to check all current activities
 - !ping to check latency
 
+## Directory Structure
+- `fox_lib` -- main library containing command cogs, events and fox_lib
+-- `cogs`
+
+- `json` -- folder to contain all json files that is used
+--
+
 ## TODOs
 1. add discord status tracking functions (online, dnd, idle, offline)
 2. base sleep tracker on discord status tracking
