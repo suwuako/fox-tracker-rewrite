@@ -24,12 +24,15 @@ Now includes/is planning to add functions to track user activity in general and 
 - !ping to check latency
 
 ## Directory Structure
-- `fox_lib` -- main library containing command cogs, events and fox_lib
+- `fox_lib`       -- main library containing command cogs, events and fox_lib
 
-* `cogs`
+  - `cogs`        -- contains all commands within the bot
+  - `events`      -- contains all events within the bot
+  - `libraries`   -- function libraries that are used to maintain clean code
 
-- `json` -- folder to contain all json files that is used
---
+- `json`          -- folder to contain all json files that is used
+  - `secret.json` -- contains all secret values (e.g. bot-token, log-channels)
+  - `config.json` -- contains all configurations for the bot
 
 ## TODOs
 1. add discord status tracking functions (online, dnd, idle, offline)
