@@ -1,5 +1,6 @@
-import fox_lib.libraries.functions as fox_library
 import discord
+
+import fox_lib.libraries.functions as fox_library
 
 from discord.ext import commands
 
@@ -51,6 +52,22 @@ class DiscordElevatedCommands(commands.Cog):
                                     inline=True)
 
             await message.send(embed=embed)
+
+    @commands.command(aliases=["web", "hook", "wh"])
+    async def webhook(self, message, *args):
+        if message.author.id not in self.elevated_users:
+            return
+
+        total_string = ""
+        for i in args:
+            if i.startswith("https://discord.com/api/webhooks/"):
+                webhook_url = i
+
+            else:
+                total_string += i + " "
+
+        webhook = discord.Webhook.from_url(webhook_url, adapter=discord.RequestsWebhookAdapter())
+        webhook.send(total_string)
 
 
 def setup(bot):

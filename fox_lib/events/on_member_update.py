@@ -10,7 +10,10 @@ class MemberUpdate(commands.Cog):
         self.bot = bot
 
         self.json_values = fox_library.read_json()
+        self.sort_activity = fox_library.sort_activity
+        self.find_diff = fox_library.find_diff
         self.now_str = fox_library.now_str
+        self.missing = fox_library.missing
 
         self.ignore_bots = self.json_values["config"]["ignore_bots"]
 
@@ -55,7 +58,27 @@ class MemberUpdate(commands.Cog):
             self.current_activities[uid]["mid"] = message_info.id
 
         await self.stat_channel.send("Init concluded")
-        print(self.current_activities)
+
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        cid = after.guild.id
+        mgid = self.json_values["secret"]["main_guild"]
+
+        # check if info is being taken from main_guild
+        if str(cid) == mgid:
+            return
+
+        if self.ignore_bots and after.bot:
+            return
+
+        if before.activities != after.activities:
+            before_act = before.activities
+            after_act = after.activities
+
+            sort = await self.sort_activity(before_act, after_act)
+            missing = await self.find_diff(sort["before"], sort["after"])
+            sorted = await self.missing(missing, sort)
+
 
 
 def setup(bot):

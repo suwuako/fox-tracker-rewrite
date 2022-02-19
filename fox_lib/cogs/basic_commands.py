@@ -1,3 +1,4 @@
+import discord
 import fox_lib.libraries.functions as fox_library
 
 from datetime import datetime
@@ -42,6 +43,14 @@ class DiscordBasicCommands(commands.Cog):
 
         output = f"[{fox_library.now_str()}]: Kemo has been online for `{uptime}`, since `{self.start_time_str}`"
         await self.latency(message, output, output)
+
+    @commands.command(aliases=["pfp", "profile"])
+    async def icon(self, message, *args):
+        avatar_urls = ""
+        for user in message.message.mentions:
+            avatar_urls += str(user.avatar_url) + "\n"
+
+        await message.send(avatar_urls)
 
 
 def setup(bot):
