@@ -6,6 +6,7 @@ Code to track activity statuses across a multitude of platforms to organise and 
 Now includes/is planning to add functions to track user activity in general and aims to track sleep schedules, spotify activity and more.
 
 Ultimately, this project is for fun to track my friends and myself. However, it also as a demonstration to show what data can be used to tell about you while being limited to an extremely tiny scope.
+
 This will only reflect a small portion of what companies that run services is able to record, tell and examine about you. 
 
 ## Dependencies
