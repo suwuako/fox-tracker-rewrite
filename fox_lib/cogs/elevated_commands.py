@@ -13,6 +13,8 @@ class DiscordElevatedCommands(commands.Cog):
         self.ignore_bots = self.json_values["config"]["ignore_bots"]
         self.elevated_users = self.json_values["secret"]["perms"]
 
+        print("elevated_commands loaded")
+
     @commands.command(aliases=["poweroff", "shutdown"])
     async def quit(self, message):
         if message.author.id not in self.elevated_users:
@@ -31,15 +33,24 @@ class DiscordElevatedCommands(commands.Cog):
 
         for guild in self.bot.guilds:
             embed = discord.Embed(title=f" {guild}",
-                          url="https://github.com/suwuako/fox-tracker",
-                          color=0x87cefa)
+                                  url="https://github.com/suwuako/fox-tracker",
+                                  color=0x87cefa)
+            embed.set_author(name=guild,
+                             icon_url=guild.icon_url)
+            embed.set_footer()
 
             async for member in guild.fetch_members(limit=None):
-                #ignore all bots
-                if self.ignore_bots and member.bot != True:
-                    activity = guild.get_member(member.id).activities
-                    if activity != ():
-                        print(activity)
+                activities = guild.get_member(member.id).activities
+
+                if not (self.ignore_bots and member.bot != True) and activities != ():
+                    continue
+                for i in activities:
+                    embed.add_field(name=f"{member.name}#{member.discriminator}",
+                                    value=f"`[{i.type.name}]`\n"
+                                          f"{i.name}\n",
+                                    inline=True)
+
+            await message.send(embed=embed)
 
 
 def setup(bot):

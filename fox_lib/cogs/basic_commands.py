@@ -11,6 +11,8 @@ class DiscordBasicCommands(commands.Cog):
 
         json_values = fox_library.read_json()
 
+        print("basic_commands loaded")
+
     async def latency(self, message, before, after):
         then = datetime.now()
         item = await message.send(before)
@@ -38,7 +40,7 @@ class DiscordBasicCommands(commands.Cog):
     async def uptime(self, message):
         uptime = (datetime.now() - self.start_time)
 
-        output = f"[{fox_library.now_str()}]: Kemo has been online for {uptime}, since {self.start_time_str}"
+        output = f"[{fox_library.now_str()}]: Kemo has been online for `{uptime}`, since `{self.start_time_str}`"
         await self.latency(message, output, output)
 
 

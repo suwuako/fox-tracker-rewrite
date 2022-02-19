@@ -12,7 +12,7 @@ class Kemo:
         self.now_str = fox_library.now_str
         self.token = json_values["secret"]["token"]
 
-        print("init")
+        print("bot initialized")
 
         @bot.event
         async def on_ready():
@@ -27,7 +27,7 @@ class Kemo:
     def load_cogs(self):
         bot.load_extension("fox_lib.cogs.basic_commands")
         bot.load_extension("fox_lib.cogs.elevated_commands")
-        #bot.load_extension("fox_lib.events.events")
+        bot.load_extension("fox_lib.events.on_member_update")
 
     def run(self):
         self.load_cogs()
