@@ -16,21 +16,19 @@ Now includes/is planning to add functions to track user activity in general and 
 ## Functions
 
 ### Auto
-- log all user statuses on initialization + continue to log changes in user activity
+- log all user statuses on initialization 
+- log changes in user activity
 
 ### Commands
 - !status to check all current activities
 - !ping to check latency
 
 ## TODOs
-1. fix bug with custom status and logging
-2. add discord status tracking functions (online, dnd, idle, offline)
-3. base sleep tracker on discord status tracking
-4. upload logged statistics to a server, whether that is to a google spreadsheet or to a personal server via ssh & scp
-5. clean up code (rewrite main and commands.cog), clean up events
-6. graph data just for the sake of it
-7. do some cool stuff with it maybe 
-8. clean the code its spaghetti rn
+1. add discord status tracking functions (online, dnd, idle, offline)
+2. base sleep tracker on discord status tracking
+3. upload logged statistics to a server, whether that is to a google spreadsheet or to a personal server via ssh & scp
+4. graph data just for the sake of it
+5. do some cool stuff with it maybe 
 
 ## License
 Creative Commons
