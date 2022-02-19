@@ -1,5 +1,5 @@
-<img src="https://cdn.discordapp.com/attachments/879261281473937451/944534159215448084/Untitled.png">
 # fox-tracker-rewrite
+<img src="https://cdn.discordapp.com/attachments/879261281473937451/944534159215448084/Untitled.png">
 
 ## Description
 Code to track activity statuses across a multitude of platforms to organise and chart data with a multitude of functions
