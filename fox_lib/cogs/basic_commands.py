@@ -34,7 +34,7 @@ class DiscordBasicCommands(commands.Cog):
 
         edit_latency = datetime.now() - then
         await message.edit(content=f"<a:fox_ears:944222338243780640> Pong!\n"
-                                   f"[latency: {latency} (ms)] \n"
+                                   f"[latency: {latency}] (ms) \n"
                                    f"[edit latency: {edit_latency}] (ms)")
 
     @commands.command(aliases=["active", "online", "time"])

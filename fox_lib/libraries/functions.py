@@ -1,4 +1,5 @@
 import json
+import discord
 
 from datetime import datetime
 
@@ -12,62 +13,77 @@ def now_str():
 def read_json():
     secret = open(r"json/secret.json")
     config = open(r"json/config.json")
+    ignore = open(r"json/ignore.json")
 
     secret = json.load(secret)
     config = json.load(config)
+    ignore = json.load(ignore)
 
-    return {"secret" : secret, "config" : config}
+    return {"secret": secret, "config": config, "ignore": ignore}
 
-async def sort_activity(before, after):
-    activity_dict = {}
-    activity_dict["before"] = {}
-    activity_dict["after"] = {}
+def fetch_misisng_act(before, after):
+    """find missing values"""
+    b_len = len(before)
+    a_len = len(after)
 
-    for i in before:
-        activity_dict["before"][i.type.name] = i
-
-    for i in after:
-        activity_dict["after"][i.type.name] = i
-
-    return activity_dict
-
-#purpose is to find before and after if they have differences and returns before and after values with Nonetype if not assigned
-async def find_diff(before, after):
-    a_keys = []
-    b_keys = []
-
-    a_keys_missing = []
-    b_keys_missing = []
-
-    for a in after:
-        a_keys.append(a)
+    b_list = list()
+    a_list = list()
 
     for b in before:
-        b_keys.append(b)
+        b_list.append(b.type.name)
+    for a in after:
+        a_list.append(a.type.name)
 
-    for a in a_keys:
-        if a not in b_keys:
-            a_keys_missing.append(a)
+    if b_len > a_len:
+        for b in before:
+            if b.type.name not in a_list:
+                return {"ab" : "after", "value" : b.type.name, "item" : b}
 
-    for b in b_keys:
-        if b not in a_keys:
-            b_keys_missing.append(b)
+    elif b_len < a_len:
+        for a in after:
+            if a.type.name not in b_list:
+                return {"ab" : "before", "value" : a.type.name, "item" : a}
 
-    return({"after" : a_keys_missing, "before": b_keys_missing})
+    elif b_len == a_len:
+        for i in range(b_len):
+            if before[i] != after[i]:
+                return {"ab" : None, "value" : before[i].type.name, "item" : before[i]}
 
-async def missing(missing, sort):
-    print(missing)
-    if len(missing["after"]) == len(missing["before"]):
-        sort["status"] = 0
-        return sort
+def time_spent(current, uid, missing):
+    try:
+        time_then = current[uid][missing["value"]]["time"]
+    except KeyError:
+        time_then = datetime.now()
 
-    elif len(missing["after"]) >= len(missing["before"]):
-        sort["before"][missing["after"][0]] = None
-        sort["status"] = 1
-        return sort
+    now = datetime.now()
+    time_elapsed = now - time_then
+    return time_elapsed.total_seconds()
 
-    elif len(missing["after"]) <= len(missing["before"]):
-        sort["after"][missing["before"][0]] = None
-        sort["status"] = 2
-        return sort
+async def log_update(missing, session_time, user, mid, bot, channel):
+    missing_value = missing["ab"]
+    embed = discord.Embed(url="https://github.com/suwuako/fox-tracker")
+    embed.set_author(name=f"{user.name}#{user.discriminator}",
+                     icon_url=user.avatar_url)
 
+    try:
+        mid = mid[user.id]["mid"]
+    except KeyError:
+        mid = mid["hook"]
+
+    if missing_value == "after":
+        embed.color=0xFF9F7F
+        embed.title=("`[end]`")
+        if missing["value"] == "listening":
+            embed.add_field(name=f"{missing['value']}, {session_time/60}m",value="something spotify")
+        else:
+            embed.add_field(name=f"{missing['value']}, session: {session_time*60}m", value=missing["item"].name)
+
+    elif missing_value == "before":
+        embed.color=0x7FFF7F
+
+    elif missing_value == None:
+        embed.color=0x7FFFB2
+
+
+    a = await channel.fetch_message(mid)
+    await a.reply(embed=embed)

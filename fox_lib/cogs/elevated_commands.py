@@ -1,5 +1,5 @@
 import discord
-
+import json
 import fox_lib.libraries.functions as fox_library
 
 from discord.ext import commands
@@ -68,6 +68,24 @@ class DiscordElevatedCommands(commands.Cog):
 
         webhook = discord.Webhook.from_url(webhook_url, adapter=discord.RequestsWebhookAdapter())
         webhook.send(total_string)
+
+    @commands.command(aliases=["except", "ignore"])
+    async def exempt(self, message):
+        if message.author.id not in self.elevated_users:
+            return
+
+        for user in message.message.raw_mentions:
+            if user in self.json_values["ignore"]:
+                await message.send(f"removing <@{user}> from ignore")
+                self.json_values["ignore"].remove(user)
+
+            elif user not in self.json_values["ignore"]:
+                await message.send(f"setting <@{user}> to ignore")
+                self.json_values["ignore"].append(user)
+
+        #write values to json
+        with open(r"json/ignore.json", "w") as file:
+            json.dump(self.json_values["ignore"], file)
 
 
 def setup(bot):

@@ -1,4 +1,5 @@
 import discord
+import pprint
 import fox_lib.libraries.functions as fox_library
 
 from discord.ext import commands
@@ -10,10 +11,7 @@ class MemberUpdate(commands.Cog):
         self.bot = bot
 
         self.json_values = fox_library.read_json()
-        self.sort_activity = fox_library.sort_activity
-        self.find_diff = fox_library.find_diff
         self.now_str = fox_library.now_str
-        self.missing = fox_library.missing
 
         self.ignore_bots = self.json_values["config"]["ignore_bots"]
 
@@ -23,8 +21,7 @@ class MemberUpdate(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.stat_channel = self.json_values["secret"]["stat_channel"]
-        self.stat_channel = await self.bot.fetch_channel(self.stat_channel)
+        self.stat_channel = await self.bot.fetch_channel(self.json_values["secret"]["stat_channel"])
 
         for guild in self.bot.guilds:
             async for member in guild.fetch_members(limit=None):
@@ -57,7 +54,8 @@ class MemberUpdate(commands.Cog):
             message_info = await self.stat_channel.send(embed=embed)
             self.current_activities[uid]["mid"] = message_info.id
 
-        await self.stat_channel.send("Init concluded")
+        mid = await self.stat_channel.send("Init concluded")
+        self.current_activities["hook"] = mid
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -71,13 +69,21 @@ class MemberUpdate(commands.Cog):
         if self.ignore_bots and after.bot:
             return
 
+        if after.id not in self.json_values["ignore"]:
+            return
+
         if before.activities != after.activities:
             before_act = before.activities
             after_act = after.activities
 
-            sort = await self.sort_activity(before_act, after_act)
-            missing = await self.find_diff(sort["before"], sort["after"])
-            sorted = await self.missing(missing, sort)
+            missing = fox_library.fetch_misisng_act(before_act, after_act)
+            session_time = fox_library.time_spent(self.current_activities, after.id, missing)
+
+            await fox_library.log_update(missing, session_time, after, self.current_activities, self.bot, self.stat_channel)
+
+
+
+
 
 
 

@@ -1,5 +1,9 @@
 #fox-tracker
 */secret.json
+json.secret.json
+json/secret.json
+*.json
+json
 secret.json
 .idea
 __pycache__
